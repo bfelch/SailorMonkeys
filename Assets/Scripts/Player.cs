@@ -4,6 +4,7 @@ using System.Collections;
 public class Player : MonoBehaviour {
 	
 	public GameObject monkey;
+	public GameObject wave;
 	public GameObject boatCamera;
 	public GameObject mainCamera;
 	
@@ -11,7 +12,8 @@ public class Player : MonoBehaviour {
 	private int numMonkeys = 10;
 	private int numClicks = 0;
 	
-	private bool canMove;
+	private bool canMove = true;
+	public static bool canMakeWave = true;
 	private new Rigidbody rigidbody;
 
 	// Use this for initialization
@@ -36,6 +38,22 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (canMove && canMakeWave && Input.GetMouseButtonDown(0)) {
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			RaycastHit hit;
+			
+			int layerMask = 1 << LayerMask.NameToLayer("WaterPlane");
+			
+			if (Physics.Raycast(ray, out hit, 200.0f, layerMask)) {
+				if (hit.collider.gameObject.tag == "Water") {
+					Instantiate(wave, hit.point, Quaternion.identity);
+					canMakeWave = false;
+				}
+				
+				Debug.Log(hit.collider.gameObject.tag);
+			}
+		}
+		
 		float hAxis = Input.GetAxis("Horizontal");
 		float vAxis = Input.GetAxis("Vertical");
 	
