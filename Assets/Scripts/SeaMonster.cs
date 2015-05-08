@@ -12,6 +12,7 @@ public class SeaMonster : MonoBehaviour {
 	
 	private float startY = -6.4f;
 	private float endY = 0;
+	private float moveSpeed = .2f;
 	
 	private MoveState moveState = MoveState.None;
 
@@ -27,7 +28,7 @@ public class SeaMonster : MonoBehaviour {
 		switch (moveState) {
 			case MoveState.Up:
 			posY = monster.transform.localPosition.y;
-			monster.transform.localPosition = new Vector3(0, posY + .5f, 0);
+			monster.transform.localPosition = new Vector3(0, posY + moveSpeed, 0);
 			
 			if (monster.transform.localPosition.y > endY) {
 				moveState = MoveState.Down;
@@ -35,7 +36,7 @@ public class SeaMonster : MonoBehaviour {
 			break;
 			case MoveState.Down:
 			posY = monster.transform.localPosition.y;
-			monster.transform.localPosition = new Vector3(0, posY - .5f, 0);
+			monster.transform.localPosition = new Vector3(0, posY - moveSpeed, 0);
 			
 			if (monster.transform.localPosition.y < startY) {
 				moveState = MoveState.None;

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 	
@@ -12,8 +13,12 @@ public class GameManager : MonoBehaviour {
 	public GameObject player;
 	public GameObject waterPlane;
 	
-	private int numBananaIslands = 5;
-	private int numSeaMonsters = 3;
+	public GameObject scorePanel;
+	public Text statsText;
+	public Text scoreText;
+	
+	private int numBananaIslands = 8;
+	private int numSeaMonsters = 5;
 	
 	private bool[,] grid;
 
@@ -65,11 +70,13 @@ public class GameManager : MonoBehaviour {
 	private GameObject RandomizeGridSpawn(GameObject item) {
 		int x;
 		int y;
+		int tries = 0;
 		
 		do {
 			x = Random.Range(1, gridW - 1);
 			y = Random.Range(1, gridH - 1);
-		} while (!NoAdjacentObstacles(x, y));
+			tries++;
+		} while (tries < 100 && !NoAdjacentObstacles(x, y));
 		
 		return SpawnGridItem(item, x, y);
 	}
@@ -82,5 +89,20 @@ public class GameManager : MonoBehaviour {
 		bool noItemOn = !grid[y, x];
 		
 		return noItemAbove && noItemBelow && noItemLeft && noItemRight && noItemOn;
+	}
+	
+	public void FinishGame(Player player) {
+		scorePanel.SetActive(true);
+		statsText.text = "";
+		scoreText.text = "";
+		
+		statsText.text += string.Format("{0:0.00%}\n", player.GetIntegrity());
+		statsText.text += player.GetRemainingMonkeys() + "\n";
+		statsText.text += player.GetNumClicks();
+		
+		scoreText.text += "x " + player.GetIntegrityMod().ToString("0.00") + "\n";
+		scoreText.text += player.GetMonkeyScore() + "\n";
+		scoreText.text += "x " + player.GetClickMod().ToString("0.00") + "\n\n";
+		scoreText.text += player.GetFinalScore().ToString("0.00");
 	}
 }

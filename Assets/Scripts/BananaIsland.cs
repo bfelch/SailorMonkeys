@@ -28,4 +28,8 @@ public class BananaIsland : MonoBehaviour {
 		GameObject newMonkey = (GameObject) Instantiate(monkey, newPos, Quaternion.Euler(0, Random.Range(0, 360.0f), 0));
 		newMonkey.transform.parent = transform;
 	}
+	
+	public int GetNumBananas() {
+		return bananas.transform.childCount;
+	}
 }
