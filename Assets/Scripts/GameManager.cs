@@ -27,10 +27,11 @@ public class GameManager : MonoBehaviour {
 	
 	private bool[,] grid;
 
-    private static bool showIntro = true;
+    private static bool showIntro;
 
 	// Use this for initialization
 	void Start () {
+		showIntro = true;
 		grid = new bool[gridH, gridW];
 		
 		//BuildGrid();
@@ -135,5 +136,9 @@ public class GameManager : MonoBehaviour {
 	
 	public void PlayAgain() {
 		Application.LoadLevel("MainGame");
+	}
+	
+	public void QuitGame() {
+		Application.Quit();
 	}
 }
