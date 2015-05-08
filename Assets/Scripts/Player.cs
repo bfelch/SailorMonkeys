@@ -13,7 +13,7 @@ public class Player : MonoBehaviour {
 	private int numClicks = 0;
 	
 	private bool canMove = true;
-	public static bool canMakeWave = true;
+	public static bool canMakeWave;
 	private new Rigidbody rigidbody;
 
     void Awake() {
@@ -23,6 +23,7 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        canMakeWave = true;
 		
 		for (int i = 0; i < numMonkeys; i++) {
 			Vector3 offset = new Vector3();
