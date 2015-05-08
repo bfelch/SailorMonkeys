@@ -116,8 +116,8 @@ public class Player : MonoBehaviour {
 			float force = other.gameObject.GetComponent<Wave>().GetHeight() / 2.0f;
 			force = Mathf.Clamp(force, 0, 100.0f);
 			
-			if (force > 2.0f) {
-				BoatDamage(force / 20.0f);
+			if (force > 1.2f) {
+				BoatDamage(force / 40.0f);
 			}
 			
 			rigidbody.AddForce(direction.normalized * force, ForceMode.Impulse);
@@ -237,7 +237,7 @@ public class Player : MonoBehaviour {
 	}
 	
 	public float GetIntegrityMod() {
-		return boatIntegrity;
+		return (-.843f * boatIntegrity * boatIntegrity) + (2.033f * boatIntegrity) + .008476f;
 	}
 	
 	public int GetMonkeyScore() {
@@ -245,7 +245,7 @@ public class Player : MonoBehaviour {
 	}
 	
 	public float GetClickMod() {
-		return numClicks * 1.0f;
+		return (.0003353f * numClicks * numClicks * numClicks) - (.00992f * numClicks * numClicks) + (.014f * numClicks) + .996f;
 	}
 	
 	public float GetFinalScore() {

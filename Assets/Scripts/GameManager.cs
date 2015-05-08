@@ -105,4 +105,8 @@ public class GameManager : MonoBehaviour {
 		scoreText.text += "x " + player.GetClickMod().ToString("0.00") + "\n\n";
 		scoreText.text += player.GetFinalScore().ToString("0.00");
 	}
+	
+	public void PlayAgain() {
+		Application.LoadLevel("MainGame");
+	}
 }
