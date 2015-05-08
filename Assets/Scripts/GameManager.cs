@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour {
 	
 	private bool[,] grid;
 
+    private static bool showIntro = true;
+
 	// Use this for initialization
 	void Start () {
 		grid = new bool[gridH, gridW];
@@ -48,14 +50,18 @@ public class GameManager : MonoBehaviour {
         playerInstance = FindObjectOfType<Player>();
 
         playerInstance.SetCanMove(false);
+
+        if (!showIntro) {
+            StartGame();
+        }
 	}
 	
 	// Update is called once per frame
 	void Update () {
         hudText.text = "";
-        hudText.text += playerInstance.GetRemainingMonkeys() + "\n";
-        hudText.text += playerInstance.GetNumClicks() + "\n";
-        hudText.text += playerInstance.GetIntegrity().ToString("0.00");
+        hudText.text += "Monkeys: " + playerInstance.GetRemainingMonkeys() + "\n";
+        hudText.text += "Clicks: " + playerInstance.GetNumClicks() + "\n";
+        hudText.text += "Boat: " + string.Format("{0:0.00%}", playerInstance.GetIntegrity());
 	}
 	
 	private void BuildGrid() {
@@ -124,6 +130,7 @@ public class GameManager : MonoBehaviour {
         hudPanel.SetActive(true);
 
         FindObjectOfType<Player>().SetCanMove(true);
+        showIntro = false;
     }
 	
 	public void PlayAgain() {
