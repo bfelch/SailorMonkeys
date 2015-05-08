@@ -12,13 +12,18 @@ public class GameManager : MonoBehaviour {
 	public GameObject finalIsland;
 	public GameObject player;
 	public GameObject waterPlane;
-	
+
+    public GameObject introPanel;
+    public GameObject hudPanel;
 	public GameObject scorePanel;
+    public Text hudText;
 	public Text statsText;
 	public Text scoreText;
+
+    private Player playerInstance;
 	
-	private int numBananaIslands = 8;
-	private int numSeaMonsters = 5;
+	private int numBananaIslands = 12;
+	private int numSeaMonsters = 7;
 	
 	private bool[,] grid;
 
@@ -39,11 +44,18 @@ public class GameManager : MonoBehaviour {
 		for (int i = 0; i < numSeaMonsters; i++){
 			RandomizeGridSpawn(seaMonster);
 		}
+
+        playerInstance = FindObjectOfType<Player>();
+
+        playerInstance.SetCanMove(false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+        hudText.text = "";
+        hudText.text += playerInstance.GetRemainingMonkeys() + "\n";
+        hudText.text += playerInstance.GetNumClicks() + "\n";
+        hudText.text += playerInstance.GetIntegrity().ToString("0.00");
 	}
 	
 	private void BuildGrid() {
@@ -73,8 +85,8 @@ public class GameManager : MonoBehaviour {
 		int tries = 0;
 		
 		do {
-			x = Random.Range(1, gridW - 1);
-			y = Random.Range(1, gridH - 1);
+			x = Random.Range(0, gridW);
+			y = Random.Range(0, gridH);
 			tries++;
 		} while (tries < 100 && !NoAdjacentObstacles(x, y));
 		
@@ -91,20 +103,28 @@ public class GameManager : MonoBehaviour {
 		return noItemAbove && noItemBelow && noItemLeft && noItemRight && noItemOn;
 	}
 	
-	public void FinishGame(Player player) {
+	public void FinishGame() {
+        hudPanel.SetActive(false);
 		scorePanel.SetActive(true);
 		statsText.text = "";
 		scoreText.text = "";
 		
-		statsText.text += string.Format("{0:0.00%}\n", player.GetIntegrity());
-		statsText.text += player.GetRemainingMonkeys() + "\n";
-		statsText.text += player.GetNumClicks();
+		statsText.text += playerInstance.GetRemainingMonkeys() + "\n";
+        statsText.text += playerInstance.GetNumClicks() + "\n";
+        statsText.text += string.Format("{0:0.00%}", playerInstance.GetIntegrity());
 		
-		scoreText.text += "x " + player.GetIntegrityMod().ToString("0.00") + "\n";
-		scoreText.text += player.GetMonkeyScore() + "\n";
-		scoreText.text += "x " + player.GetClickMod().ToString("0.00") + "\n\n";
-		scoreText.text += player.GetFinalScore().ToString("0.00");
+		scoreText.text += playerInstance.GetMonkeyScore() + "\n";
+        scoreText.text += "x " + playerInstance.GetClickMod().ToString("0.00") + "\n";
+        scoreText.text += "x " + playerInstance.GetIntegrityMod().ToString("0.00") + "\n\n";
+		scoreText.text += playerInstance.GetFinalScore().ToString("0.00");
 	}
+
+    public void StartGame() {
+        introPanel.SetActive(false);
+        hudPanel.SetActive(true);
+
+        FindObjectOfType<Player>().SetCanMove(true);
+    }
 	
 	public void PlayAgain() {
 		Application.LoadLevel("MainGame");

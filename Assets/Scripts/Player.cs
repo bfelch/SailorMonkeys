@@ -16,11 +16,13 @@ public class Player : MonoBehaviour {
 	public static bool canMakeWave = true;
 	private new Rigidbody rigidbody;
 
+    void Awake() {
+        mainCamera = Camera.main.gameObject;
+        rigidbody = GetComponent<Rigidbody>();
+    }
+
 	// Use this for initialization
 	void Start () {
-		mainCamera = Camera.main.gameObject;
-		
-		rigidbody = GetComponent<Rigidbody>();
 		
 		for (int i = 0; i < numMonkeys; i++) {
 			Vector3 offset = new Vector3();
@@ -221,7 +223,7 @@ public class Player : MonoBehaviour {
 	}
 	
 	private void FinishGame() {
-			FindObjectOfType<GameManager>().FinishGame(this);
+			FindObjectOfType<GameManager>().FinishGame();
 	}
 	
 	public float GetIntegrity() {
